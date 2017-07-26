@@ -2,6 +2,7 @@ language: cpp
 
 sudo: required
 dist: trusty
+osx_image: xcode8
 
 # Disable builds on normal pushes, we only want to build tags
 branches:
@@ -141,12 +142,9 @@ before_script:
       fi;
     fi;
   - if [ "$PLATFORM" = "javascript" ]; then
-      cd $HOME;
-      wget https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz;
-      tar -xzf emsdk-portable.tar.gz;
-      cd emsdk-portable; ./emsdk update; ./emsdk install latest; ./emsdk activate latest;
-      source ./emsdk_env.sh;
-      cd $TRAVIS_BUILD_DIR;
+      brew update; brew install -v scons emscripten;
+      emcc; sed -i "" s/^LLVM_ROOT.*/LLVM_ROOT='"\/usr\/local\/opt\/emscripten\/libexec\/llvm\/bin\/"'/ "$HOME/.emscripten";
+      sed -i "" "/^BINARYEN_ROOT.*/d" "$HOME/.emscripten";
       export EMSCRIPTEN_ROOT=`em-config EMSCRIPTEN_ROOT`;
     fi;
 
