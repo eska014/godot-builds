@@ -177,7 +177,7 @@ script:
       $SCONS platform=$PLATFORM CXX=$CXX $OPTIONS arch=arm64 target=$TARGET;
     fi;
   - if [ "$PLATFORM" = "javascript" ]; then
-      docker exec -it emscripten $SCONS platform=$PLATFORM CXX=$CXX $OPTIONS target=$TARGET;
+      docker exec -u `id -u` -it emscripten $SCONS platform=$PLATFORM CXX=$CXX $OPTIONS target=$TARGET;
     fi;
 
 
